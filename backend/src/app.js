@@ -7,6 +7,7 @@ const roomRoutes      = require('./routes/rooms');
 const layoutRoutes    = require('./routes/layouts');
 const uploadRoutes    = require('./routes/upload');
 const errorHandler    = require('./middlewares/errorHandler');
+const removebgRoutes   = require('./routes/removebg');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use('/api/furnitures', furnitureRoutes);
 app.use('/api/rooms',      roomRoutes);
 app.use('/api/layouts',    layoutRoutes);
 app.use('/api/upload',     uploadRoutes);
+app.use('/api/removebg',   removebgRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
