@@ -1,22 +1,26 @@
-const express = require('express')
-const cors = require('cors')
-const dotenv = require('dotenv')
+const express = require('express');
+const cors    = require('cors');
+const helmet  = require('helmet');
 
-dotenv.config()
+const furnitureRoutes = require('./routes/furnitures');
+const roomRoutes      = require('./routes/rooms');
+const layoutRoutes    = require('./routes/layouts');
+const uploadRoutes    = require('./routes/upload');
+const errorHandler    = require('./middlewares/errorHandler');
 
-const app = express()
-const PORT = process.env.PORT || 3000
+const app = express();
 
-app.use(cors())
-app.use(express.json())
+app.use(helmet());
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(express.json());
 
-// 서버 상태 확인
-app.get('/', (req, res) => {
-  res.json({ status: 'ok', message: 'SSOK API 서버가 실행 중입니다.' })
-})
+app.use('/api/furnitures', furnitureRoutes);
+app.use('/api/rooms',      roomRoutes);
+app.use('/api/layouts',    layoutRoutes);
+app.use('/api/upload',     uploadRoutes);
 
-app.listen(PORT, () => {
-  console.log(`서버가 ${PORT}번 포트에서 실행 중입니다.`)
-})
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
+app.use(errorHandler);
 
+module.exports = app;
