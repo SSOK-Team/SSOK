@@ -1,10 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const Replicate = require('replicate')
-
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN
-})
 
 router.post('/', async (req, res) => {
   try {
@@ -14,23 +9,31 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: '이미지 URL이 필요합니다' })
     }
 
-    const output = await replicate.run(
-      "schananas/grounded_sam:ee871c19efb1941f55f66a3d7d960428c8a5afcb77449547fe8e5a3ab9ebc21c",
-      {
-        input: {
-          image: imageUrl,
-          prompt: "furniture",
-          box_threshold: 0.3,
-          text_threshold: 0.25
-        }
-      }
-    )
+    const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+      method: 'POST',
+      headers: {
+        'X-Api-Key': process.env.REMOVEBG_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        image_url: imageUrl,
+        size: 'auto'
+      })
+    })
 
-    res.json({ result: output })
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.errors?.[0]?.title || '배경 제거 실패')
+    }
+
+    const resultBuffer = await response.arrayBuffer()
+    const base64 = Buffer.from(resultBuffer).toString('base64')
+
+    res.json({ result: `data:image/png;base64,${base64}` })
 
   } catch (error) {
-    console.error('SAM API 오류:', error)
-    res.status(500).json({ error: 'SAM API 호출 중 오류가 발생했습니다' })
+    console.error('Remove.bg 오류:', error)
+    res.status(500).json({ error: error.message })
   }
 })
 
