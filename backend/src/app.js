@@ -8,6 +8,7 @@ const layoutRoutes    = require('./routes/layouts');
 const uploadRoutes    = require('./routes/upload');
 const errorHandler    = require('./middlewares/errorHandler');
 const removebgRoutes   = require('./routes/removebg');
+const spaceAnalysisRoutes = require('./routes/spaceAnalysis');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use('/api/rooms',      roomRoutes);
 app.use('/api/layouts',    layoutRoutes);
 app.use('/api/upload',     uploadRoutes);
 app.use('/api/removebg',   removebgRoutes);
+app.use('/api/space-analysis', spaceAnalysisRoutes);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
