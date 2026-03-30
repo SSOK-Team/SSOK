@@ -1,0 +1,335 @@
+/* ─────────────────────────────────────────
+   SSOK  –  자취방 가구배치 시뮬레이터
+   Global Styles
+───────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Space+Grotesk:wght@600;700&display=swap');
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f0ede8;
+  --surface:   #faf9f7;
+  --panel:     #ffffff;
+  --accent:    #c8a96e;
+  --accent2:   #4a7c6f;
+  --danger:    #d96b5a;
+  --text:      #1e1c18;
+  --text-mute: #8a8580;
+  --border:    #ddd9d2;
+  --shadow:    0 2px 16px rgba(0,0,0,0.09);
+  --radius:    10px;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── App Wrapper ── */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ── Topbar ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 54px;
+  padding: 0 20px;
+  background: var(--panel);
+  border-bottom: 1.5px solid var(--border);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.logo-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent2);
+  letter-spacing: -0.5px;
+}
+
+.logo-sub {
+  font-size: 12px;
+  color: var(--text-mute);
+  font-weight: 500;
+}
+
+.topbar-center .scale-info {
+  font-size: 12px;
+  color: var(--text-mute);
+  background: var(--bg);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+.topbar-right {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Buttons ── */
+.btn-outline {
+  padding: 6px 14px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.btn-outline:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.btn-primary {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  background: var(--accent2);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-primary:hover { background: #3a6659; transform: translateY(-1px); }
+
+/* ── Main Layout ── */
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.canvas-area {
+  flex: 1;
+  overflow: auto;
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background:
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-color: var(--bg);
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--panel);
+  border-left: 1.5px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.04);
+}
+
+/* ── Furniture Sidebar ── */
+.sidebar-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  padding: 16px 16px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-category {
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+  background: var(--surface);
+}
+.sidebar-category-header:hover { background: var(--bg); }
+
+.sidebar-category-header .chevron {
+  font-size: 10px;
+  color: var(--text-mute);
+  transition: transform 0.2s;
+}
+.sidebar-category-header.open .chevron { transform: rotate(180deg); }
+
+.sidebar-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--panel);
+}
+
+.furniture-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.1s;
+  font-size: 13px;
+}
+.furniture-item:hover {
+  background: var(--bg);
+  transform: translateX(3px);
+}
+
+.furniture-item .item-icon {
+  font-size: 20px;
+  width: 28px;
+  text-align: center;
+}
+
+.furniture-item .item-info { flex: 1; }
+.furniture-item .item-name { font-weight: 500; font-size: 13px; }
+.furniture-item .item-size { font-size: 11px; color: var(--text-mute); }
+
+.furniture-item .add-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent2);
+  color: white;
+  border: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.furniture-item:hover .add-btn { opacity: 1; }
+
+/* ── Canvas / Room ── */
+.room-canvas {
+  position: relative;
+  background: #f5f0e8;
+  border: 2.5px solid #333;
+  box-shadow: var(--shadow);
+  cursor: default;
+  overflow: hidden;
+}
+
+.room-ruler-h,
+.room-ruler-v {
+  position: absolute;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+}
+
+/* ── Draggable Item on Canvas ── */
+.placed-item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  cursor: grab;
+  user-select: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-size: 11px;
+  font-weight: 600;
+  gap: 2px;
+}
+.placed-item:hover, .placed-item.selected {
+  border-color: var(--accent2);
+  box-shadow: 0 0 0 3px rgba(74,124,111,0.2);
+}
+.placed-item.dragging { cursor: grabbing; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+
+.placed-item .item-emoji { font-size: 22px; }
+.placed-item .item-label { font-size: 9px; color: #555; white-space: nowrap; }
+
+.item-controls {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 5px;
+  box-shadow: var(--shadow);
+}
+.item-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 1px 3px;
+  border-radius: 3px;
+  transition: background 0.1s;
+}
+.item-controls button:hover { background: var(--bg); }
+
+/* ── Room Size Controls ── */
+.room-controls {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.room-controls h4 {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+.room-controls .control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.room-controls input[type="range"] {
+  width: 110px;
+  accent-color: var(--accent2);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
