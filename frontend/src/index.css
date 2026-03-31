@@ -26,8 +26,6 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   background: var(--bg);
   color: var(--text);
-  height: 100vh;
-  overflow: hidden;
 }
 
 /* ── App Wrapper ── */
@@ -35,6 +33,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden;
+
 }
 
 /* ── Topbar ── */
