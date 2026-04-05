@@ -1,10 +1,10 @@
 import { useState } from "react";
 import DraggableImage from "../components/Canvas/DraggableImage";
+import RoomCanvas3D from "../components/Canvas/RoomCanvas3D";
 import LeftSidebar from "../components/Layout/LeftSidebar";
 import RightPanel from "../components/Layout/RightPanel";
-import BottomBar from "../components/Layout/BottomBar"
-import Topbar from "../components/Layout/Topbar"
-
+import BottomBar from "../components/Layout/BottomBar";
+import Topbar from "../components/Layout/Topbar";
 import "../index.css";
 
 export default function SimulatorPage() {
@@ -21,12 +21,10 @@ export default function SimulatorPage() {
   const [furnitureList, setFurnitureList] = useState([]);
   const [materialList, setMaterialList] = useState([]);
   const [scale, setScale] = useState(1);
+  const [is3D, setIs3D] = useState(false);
   const [areaResult, setAreaResult] = useState(null);
-  const [history, setHistory] = useState([]);
-  const [future, setFuture] = useState([]);
 
   const saveHistory = () => {};
-
   const onUndo = () => {};
   const onRedo = () => {};
 
@@ -69,16 +67,16 @@ export default function SimulatorPage() {
   const clearAll = () => setPlacedItems([]);
 
   const calcArea = () => {
-  const totalArea = rooms.reduce((s, r) => s + (r.area || 0), 0)
-  const furnitureArea = placedItems.reduce((s, item) => {
-    return s + ((item.w || 0) * (item.h || 0)) / 10000
-  }, 0)
-  setAreaResult({
-    total: totalArea.toFixed(2),
-    furniture: furnitureArea.toFixed(2),
-    remaining: (totalArea - furnitureArea).toFixed(2)
-  })
-}
+    const totalArea = rooms.reduce((s, r) => s + (r.area || 0), 0);
+    const furnitureArea = placedItems.reduce((s, item) => {
+      return s + ((item.w || 0) * (item.h || 0)) / 10000;
+    }, 0);
+    setAreaResult({
+      total: totalArea.toFixed(2),
+      furniture: furnitureArea.toFixed(2),
+      remaining: (totalArea - furnitureArea).toFixed(2)
+    });
+  };
 
   const selectedInfo = selectedItem
     ? placedItems.find(i => i.instanceId === selectedItem)
@@ -86,14 +84,14 @@ export default function SimulatorPage() {
 
   return (
     <div className="app-wrapper">
-       <Topbar
-  mode={mode}
-  setMode={setMode}
-  showGrid={showGrid}
-  setShowGrid={setShowGrid}
-  onUndo={onUndo}
-  onRedo={onRedo}
-/>
+      <Topbar
+        mode={mode}
+        setMode={setMode}
+        showGrid={showGrid}
+        setShowGrid={setShowGrid}
+        onUndo={onUndo}
+        onRedo={onRedo}
+      />
       <div className="body-layout">
         <LeftSidebar
           leftOpen={leftOpen}
@@ -108,24 +106,32 @@ export default function SimulatorPage() {
           handleMaterialUpload={handleMaterialUpload}
         />
         <div className="canvas-area">
-          <DraggableImage
-            mode={mode}
-            showGrid={showGrid}
-            walls={walls}
-            setWalls={setWalls}
-            vertices={vertices}
-            setVertices={setVertices}
-            rooms={rooms}
-            setRooms={setRooms}
-            drawingWall={drawingWall}
-            setDrawingWall={setDrawingWall}
-            placedItems={placedItems}
-            updateItem={updateItem}
-            removeItem={removeItem}
-            selectedItem={selectedItem}
-            setSelectedItem={setSelectedItem}
-            saveHistory={saveHistory}
-          />
+          {is3D
+            ? <RoomCanvas3D
+                placedItems={placedItems}
+                updateItem={updateItem}
+                removeItem={removeItem}
+                roomSize={{ width: 500, height: 400 }}
+              />
+            : <DraggableImage
+                mode={mode}
+                showGrid={showGrid}
+                walls={walls}
+                setWalls={setWalls}
+                vertices={vertices}
+                setVertices={setVertices}
+                rooms={rooms}
+                setRooms={setRooms}
+                drawingWall={drawingWall}
+                setDrawingWall={setDrawingWall}
+                placedItems={placedItems}
+                updateItem={updateItem}
+                removeItem={removeItem}
+                selectedItem={selectedItem}
+                setSelectedItem={setSelectedItem}
+                saveHistory={saveHistory}
+              />
+          }
         </div>
         <RightPanel
           rightOpen={rightOpen}
@@ -141,6 +147,8 @@ export default function SimulatorPage() {
         rooms={rooms}
         areaResult={areaResult}
         calcArea={calcArea}
+        is3D={is3D}
+        setIs3D={setIs3D}
       />
     </div>
   );
