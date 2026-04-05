@@ -80,11 +80,15 @@ const styles = `
 export default function HomePage() {
   const [tab, setTab] = useState('login')
   const [form, setForm] = useState({ email: '', password: '', nickname: '' })
+  const [loading, setLoading] = useState(false) // ✅ 추가
   const navigate = useNavigate()
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
   const handleSubmit = async () => {
+
+    if (loading) return // ✅ 중복 클릭 방지
+
     const url = tab === 'login'
       ? 'http://localhost:3000/api/auth/login'
       : 'http://localhost:3000/api/auth/register'
@@ -94,6 +98,7 @@ export default function HomePage() {
       : { email: form.email, password: form.password, nickname: form.nickname }
 
     try {
+      setLoading(true) // ✅ 요청 시작
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -113,6 +118,8 @@ export default function HomePage() {
       }
     } catch (e) {
       alert('서버 연결 오류')
+    } finally {
+      setLoading(false) // ✅ 요청 완료
     }
   }
 
@@ -171,8 +178,13 @@ export default function HomePage() {
                 <label className="form-label">비밀번호</label>
                 <input className="form-input" type="password" name="password" placeholder="비밀번호를 입력해주세요" value={form.password} onChange={handleChange} />
               </div>
-              <button className="form-submit" onClick={handleSubmit}>
-                {tab === 'login' ? '로그인' : '회원가입'}
+              <button 
+                className="form-submit" 
+                onClick={handleSubmit}
+                disabled={loading}
+                style = {{ opacity: loading ? 0.6 : 1, cursor: loading ? 'not-allowed' : 'pointer'}}
+              >
+                {loading ? '처리 중...' : (tab === 'login' ? '로그인' : '회원가입')}
               </button>
               <div className="form-switch">
                 {tab === 'login'

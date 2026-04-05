@@ -13,12 +13,14 @@ const SQL = `
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 CREATE TABLE IF NOT EXISTS users (
-  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email      VARCHAR(255) NOT NULL UNIQUE,
-  nickname   VARCHAR(100),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  email         VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  nickname      VARCHAR(100),
+  is_verified   BOOLEAN DEFAULT FALSE,
+  verify_token  VARCHAR(255),
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
-
 CREATE TABLE IF NOT EXISTS rooms (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
