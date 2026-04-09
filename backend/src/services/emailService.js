@@ -3,11 +3,14 @@ const nodemailer = require('nodemailer');
 
 // Gmail 기준 설정 (다른 SMTP도 동일 구조)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',  // ✅ service 대신 host 직접 지정
+  port: 587,               // ✅ 465 대신 587 포트 사용
+  secure: false,           // ✅ 587은 false
   auth: {
-    user: process.env.EMAIL_USER,       // 발신 Gmail 계정
-    pass: process.env.EMAIL_PASS,       // Gmail 앱 비밀번호 (2단계 인증 후 생성)
+    user: process.env.EMAIL_USER,      // 발신 Gmail 계정
+    pass: process.env.EMAIL_PASS,      // Gmail 앱 비밀번호 (2단계 인증 후 생성)
   },
+  family: 4,               // ✅ IPv4 강제 사용 (핵심!)
 });
 
 // 인증 메일 발송
