@@ -6,6 +6,7 @@ export default function BottomBar({ leftOpen, rooms, areaResult, calcArea }) {
           className="btn-3d"
           onClick={() => alert("3D 변환 기능은 준비 중입니다.")}
           disabled={rooms.length === 0}
+          title={rooms.length === 0 ? "벽을 먼저 그려주세요" : "3D로 보기"}
         >
           <span className="btn-3d-icon">⬛</span>
           <span>3D로 보기</span>
