@@ -1,4 +1,6 @@
-export default function Topbar({ mode, setMode, showGrid, setShowGrid, onUndo, onRedo }) {
+import ExportButton from "../Export/ExportImage";
+
+export default function Topbar({ mode, setMode, showGrid, setShowGrid, onUndo, onRedo, svgRef }) {
   return (
     <header className="topbar">
       <div className="topbar-left">
@@ -48,6 +50,11 @@ export default function Topbar({ mode, setMode, showGrid, setShowGrid, onUndo, o
           <span style={{ fontSize: 13 }}>{showGrid ? "⊞" : "⊟"}</span>
           격자 {showGrid ? "ON" : "OFF"}
         </button>
+
+        <div className="divider-v" />
+
+        {/* 21번: PNG/JPG 내보내기 */}
+        <ExportButton svgRef={svgRef} />
       </div>
 
       <div className="topbar-right">
