@@ -194,6 +194,8 @@ export default function SimulatorPage() {
                 updateItem={updateItem}
                 removeItem={removeItem}
                 roomSize={{ width: 500, height: 400 }}
+                walls={walls}
+                rooms={rooms}
               />
             : <DraggableImage
                 mode={mode}               showGrid={showGrid}
