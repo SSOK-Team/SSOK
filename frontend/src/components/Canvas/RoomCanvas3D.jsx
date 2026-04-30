@@ -59,7 +59,7 @@ export default function RoomCanvas3D({ placedItems, removeItem, roomSize, walls,
   const hasWalls = walls && walls.length > 0;
 
   return (
-    <div style={{ width: "100%", height: "600px", borderRadius: "10px", overflow: "hidden" }}>
+    <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
       {!hasWalls ? (
         <div style={{
           width: "100%", height: "100%",
