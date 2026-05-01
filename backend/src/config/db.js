@@ -3,11 +3,8 @@ dotenv.config()
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  host:     process.env.DB_HOST,
-  port:     process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user:     process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  connectionString: process.env.DATABASE_URL,  // ✅ 한 줄로 교체
+  ssl: { rejectUnauthorized: false },           // ✅ Supabase SSL 추가
   max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
