@@ -97,6 +97,20 @@ JOIN furniture_categories c ON c.name = v.cat
 WHERE NOT EXISTS (
   SELECT 1 FROM furnitures f WHERE f.name = v.name
 );
+
+ALTER TABLE furnitures ADD COLUMN IF NOT EXISTS model_url TEXT;
+ALTER TABLE furnitures ADD COLUMN IF NOT EXISTS thumbnail_url TEXT;
+
+-- 가구별 여러 모델 저장 테이블
+CREATE TABLE IF NOT EXISTS furniture_models (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  furniture_id UUID NOT NULL REFERENCES furnitures(id) ON DELETE CASCADE,
+  model_url    TEXT NOT NULL,
+  thumbnail_url TEXT,
+  source       VARCHAR(50) DEFAULT 'sketchfab',  -- 출처
+  is_default   BOOLEAN DEFAULT FALSE,             -- 기본 모델 여부
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 `;
 
 async function migrate() {
