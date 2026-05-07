@@ -8,6 +8,8 @@ import Topbar               from "../components/Layout/Topbar";
 import ContextMenu          from "../components/ContextMenu/ContextMenu";
 import { useFurnitureLock } from "../hooks/useFurnitureLock";
 import { useContextMenu }   from "../hooks/useContextMenu";
+import { useEffect } from "react";
+
 import "../index.css";
 
 const MAX_PX = 200;
@@ -37,6 +39,21 @@ export default function SimulatorPage() {
 
   // ── 가구 / 마감재 ──
   const [furnitureList, setFurnitureList] = useState([]);
+  useEffect(() => {
+  fetch('http://localhost:3000/api/furnitures')
+    .then(res => res.json())
+    .then(data => {
+      const mapped = data.map(f => ({
+        ...f,
+        w: Math.round((f.width_cm || 100) * 0.5),   // cm → px 변환 (1cm = 0.5px)
+        h: Math.round((f.depth_cm || 100) * 0.5),
+        url: f.thumbnail_url || null,
+        emoji: '🪑',
+      }));
+      setFurnitureList(mapped);
+    })
+    .catch(err => console.error('가구 불러오기 실패:', err));
+}, []);
   const [placedItems, setPlacedItems]     = useState([]);
   const [materialList, setMaterialList]   = useState([]);
   const [selectedItem, setSelectedItem]   = useState(null);
