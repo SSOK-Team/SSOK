@@ -7,14 +7,14 @@ const SKETCHFAB_API = 'https://api.sketchfab.com/v3'
 const headers = { Authorization: `Token ${process.env.SKETCHFAB_API_KEY}` }
 
 const furnitureKeywords = [
-  { name: '싱글 침대',  keyword: 'single bed low poly' },
-  { name: '더블 침대',  keyword: 'double bed low poly' },
-  { name: '퀸 침대',    keyword: 'queen bed low poly' },
-  { name: '1인 책상',   keyword: 'wooden desk low poly' },
-  { name: 'L자 책상',   keyword: 'L shaped desk low poly' },
-  { name: '2인 소파',   keyword: 'two seater sofa low poly' },
-  { name: '2도어 옷장', keyword: 'wardrobe closet low poly' },
-  { name: '3단 수납장', keyword: 'bookshelf low poly' },
+  { name: '싱글 침대',  keyword: 'single bed bedroom furniture 3d' },
+  { name: '더블 침대',  keyword: 'double bed furniture interior 3d' },
+  { name: '퀸 침대',    keyword: 'queen size bed furniture 3d' },
+  { name: '1인 책상',   keyword: 'study desk office furniture 3d' },
+  { name: 'L자 책상',   keyword: 'L shape corner desk furniture 3d' },
+  { name: '2인 소파',   keyword: 'two seat couch sofa interior 3d' },
+  { name: '2도어 옷장', keyword: 'wardrobe cabinet closet 3d' },
+  { name: '3단 수납장', keyword: 'bookshelf storage cabinet 3d' },
 ]
 
 async function fetchAndSaveModels() {

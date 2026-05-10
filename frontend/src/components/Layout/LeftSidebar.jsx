@@ -116,10 +116,11 @@ export default function LeftSidebar({
               ) : displayList.map((f) => (
                 <div key={f.id} className="furniture-thumb" style={{ position: "relative" }}
                   onClick={() => addFurnitureToCanvas(f)}>
-                  <img src={f.url} alt={f.name} />
+                  {f.url && (
+                    <img src={f.url} alt={f.name} />
+                  )}
                   <span>{f.name.replace(/\.[^.]+$/, "")}</span>
                   <span className="add-hint">+ 배치</span>
-                  {/* 즐겨찾기 버튼 (18번) */}
                   <FavoriteButton
                     id={f.id}
                     isFavorite={isFavorite(f.id)}

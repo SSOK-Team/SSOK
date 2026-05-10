@@ -3,6 +3,7 @@ import FurnitureCoordInput   from "../Furniture/FurnitureCoordInput";
 import FurnitureColorPalette from "../Furniture/FurnitureColorPalette";
 import FurnitureLock         from "../Furniture/FurnitureLock";
 import FurnitureAlign        from "../Furniture/FurnitureAlign";
+import SketchfabSearch from '../Furniture/SketchfabSearch' //DB
 
 // ── 공통 인라인 입력 스타일 ──
 const inputStyle = {
@@ -144,6 +145,21 @@ export default function RightPanel({
               isLocked={isLocked(selectedInfo.instanceId)}
               onToggle={() => onToggleLock(selectedInfo.instanceId)}
             />
+
+            {/* ✅ 3D 모델 검색 추가 */}
+            <div style={{ marginTop: 12, borderTop: "1px solid #f0f0f0", paddingTop: 12 }}>
+              <p className="info-section-title">3D 모델 검색</p>
+              <SketchfabSearch
+                furnitureId={selectedInfo.id}
+                onSelect={(model) => {
+                  console.log('선택된 모델:', model)
+                  updateItem(selectedInfo.instanceId, {
+                    url: model.thumbnail_url,
+                    model_url: model.model_url
+                  })
+                }}
+              />
+            </div>
 
             {/* 삭제 */}
             <button
