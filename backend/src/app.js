@@ -30,6 +30,7 @@ app.use('/api/upload',         uploadRoutes);
 app.use('/api/removebg',       removebgRoutes);
 app.use('/api/space-analysis', spaceAnalysisRoutes);
 app.use('/api/auth',           authRoutes);
+app.use('/api/admin', require('./routes/admin')) //3D DB
 app.use(express.json()); // body-parser 설정 (회원가입 시 필수)
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
