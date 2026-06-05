@@ -13,6 +13,9 @@ export default function LeftSidebar({
   materials, onMaterialApply,
   bgImage, bgOpacity, onBgLoad, onBgOpacity, onBgClear,
   onAddDoorWindow,
+  selectedRoomIdx,  
+  setSelectedRoomIdx, 
+  roomCount,    
 }) {
   const [leftTab, setLeftTab] = useState("draw");
   const [showFavOnly, setShowFavOnly] = useState(false);
@@ -134,6 +137,28 @@ export default function LeftSidebar({
         {/* ── 마감재 ── */}
         {leftTab === "material" && (
           <div className="panel-section">
+
+            {/* 방 선택 탭 */}
+            {roomCount > 1 && (
+              <div style={{ display: "flex", gap: 6, marginBottom: 12, flexWrap: "wrap" }}>
+                {Array.from({ length: roomCount }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedRoomIdx(i)}
+                    style={{
+                      padding: "5px 12px", fontSize: 12, borderRadius: 6,
+                      border: selectedRoomIdx === i ? "2px solid #059669" : "1.5px solid #e5e5e5",
+                      background: selectedRoomIdx === i ? "#f0fdf4" : "#fff",
+                      color: selectedRoomIdx === i ? "#059669" : "#666",
+                      cursor: "pointer", fontWeight: selectedRoomIdx === i ? 700 : 400,
+                      fontFamily: "'Noto Sans KR', sans-serif",
+                    }}
+                  >
+                    방 {i + 1}
+                  </button>
+                ))}
+              </div>
+            )}
             <p className="panel-title">마감재 업로드</p>
             <label className="upload-btn">
               <span>📁</span> 이미지 업로드

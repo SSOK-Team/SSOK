@@ -64,6 +64,7 @@ export default function RightPanel({
   selectedIds, placedItems,
   // 공간 설정 상태 (App.jsx에서 내려줌)
   spaceConfig, setSpaceConfig,
+  selectedRoomIdx, 
 }) {
   return (
     <aside className={`right-panel ${rightOpen ? "open" : "closed"}`}>
@@ -193,11 +194,25 @@ export default function RightPanel({
 
             {/* 공간 면적 — 자동 계산 */}
             {rooms.length > 0 && (
-              <EditRow label="공간 면적">
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#059669" }}>
-                  {rooms.reduce((s, r) => s + (r.area || 0), 0).toFixed(2)} ㎡
-                </span>
-              </EditRow>
+              <div style={{ marginTop: 4 }}>
+                {rooms.map((r, i) => (
+                  <EditRow key={i} label={`방 ${i + 1} 면적`}>
+                    <span style={{ 
+                      fontSize: 12, fontWeight: 700, 
+                      color: selectedRoomIdx === i ? "#059669" : "#888",
+                      background: selectedRoomIdx === i ? "#f0fdf4" : "transparent",
+                      padding: "2px 6px", borderRadius: 4,
+                    }}>
+                      {(r.area || 0).toFixed(2)} ㎡
+                    </span>
+                  </EditRow>
+                ))}
+                <EditRow label="전체 면적">
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#059669" }}>
+                    {rooms.reduce((s, r) => s + (r.area || 0), 0).toFixed(2)} ㎡
+                  </span>
+                </EditRow>
+              </div>
             )}
 
             {/* 4번: 정렬 툴 */}
