@@ -62,6 +62,9 @@ export default function SimulatorPage() {
 
   // ── 벽지/바닥재 ──
   const [materials, setMaterials] = useState({ wall: null, floor: null, ceiling: null });
+  const [roomMaterials, setRoomMaterials] = useState({}); // { 0: {wall, floor}, 1: {wall, floor} }
+  const [selectedRoomIdx, setSelectedRoomIdx] = useState(0);
+
 
   // ── 도면 밑그림 ──
   const [bgImage, setBgImage]     = useState(null);
@@ -197,7 +200,11 @@ export default function SimulatorPage() {
           materialList={materialList}
           handleMaterialUpload={handleMaterialUpload}
           materials={materials}
-          onMaterialApply={(type, val) => setMaterials((prev) => ({ ...prev, [type]: val }))}
+          onMaterialApply={(type, val) => {setRoomMaterials(prev => ({...prev,[selectedRoomIdx]: {...prev[selectedRoomIdx],[type]: val}}));
+            setMaterials(prev => ({ ...prev, [type]: val }));}}
+          selectedRoomIdx={selectedRoomIdx}
+          setSelectedRoomIdx={setSelectedRoomIdx}
+          roomCount={rooms.length}
           bgImage={bgImage}     bgOpacity={bgOpacity}
           onBgLoad={setBgImage} onBgOpacity={setBgOpacity}
           onBgClear={() => setBgImage(null)}
@@ -213,7 +220,13 @@ export default function SimulatorPage() {
                 roomSize={{ width: 500, height: 400 }}
                 walls={walls}
                 rooms={rooms}
+                materials={materials}
+                roomMaterials={roomMaterials}
+                setRoomMaterials={setRoomMaterials}
+                selectedRoomIdx={selectedRoomIdx}
+                setSelectedRoomIdx={setSelectedRoomIdx}
               />
+              
             : <DraggableImage
                 mode={mode}               showGrid={showGrid}
                 walls={walls}             setWalls={setWalls}
